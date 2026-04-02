@@ -240,7 +240,9 @@ def tela_fase():
     st.markdown(
         f"<div style='font-size:20px; line-height:1.6;'><b>Situação:</b> {dados.get('Cenario','...')}</div>",
         unsafe_allow_html=True
-    )st.divider()
+    )
+    
+    st.divider()
 
 # Agora coloca a foto ao lado das opções
 col_img, col_opcoes = st.columns([1, 2])
