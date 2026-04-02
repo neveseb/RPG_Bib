@@ -18,6 +18,25 @@ st.set_page_config(
     page_icon="📖",
     layout="wide"
 )
+st.markdown("""
+<style>
+/* Texto geral */
+html, body, [class*="css"]  {
+    font-size: 18px !important;
+}
+
+/* Botões */
+.stButton>button {
+    font-size: 18px !important;
+    padding: 12px 18px;
+}
+
+/* Títulos */
+h1 { font-size: 40px !important; }
+h2 { font-size: 30px !important; }
+h3 { font-size: 24px !important; }
+</style>
+""", unsafe_allow_html=True)
 
 ASSETS_DIR = "personagens"
 CAMINHO_CSV = "desafios60.csv"
@@ -177,7 +196,7 @@ def tela_selecao():
 
             if st.button(f"Selecionar {nome}"):
                 st.session_state.nome_personagem = nome
-
+                st.session_state.personagem_img = info["img"]
                 st.session_state.amor = 0
                 st.session_state.bondade = 0
                 st.session_state.orgulho = 0
@@ -201,8 +220,18 @@ def tela_fase():
 
     dados = st.session_state.lista_desafios[st.session_state.indice_desafio]
 
-    st.header(f"📍 Cenário: {dados.get('Contexto', 'Geral')}")
-    st.markdown(f"**Situação:** {dados.get('Cenario', '...')}")
+    col1, col2 = st.columns([1, 2])
+
+    with col1:
+        img_path = os.path.join(ASSETS_DIR, st.session_state.get("personagem_img", ""))
+        if os.path.exists(img_path):
+            st.image(Image.open(img_path), width=250)
+
+    with col2:
+        st.header(f"📍 Cenário: {dados.get('Contexto', 'Geral')}")
+        st.markdown(f"**Situação:** {dados.get('Cenario', '...')}")
+    
+    
 
     st.divider()
 
