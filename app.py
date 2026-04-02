@@ -230,6 +230,7 @@ def tela_fase():
 
     barra_status()
 
+    # >>> ESSA LINHA PRECISA EXISTIR AQUI
     dados = st.session_state.lista_desafios[st.session_state.indice_desafio]
 
     st.markdown(
@@ -241,48 +242,41 @@ def tela_fase():
         f"<div style='font-size:20px; line-height:1.6;'><b>Situação:</b> {dados.get('Cenario','...')}</div>",
         unsafe_allow_html=True
     )
-    
+
     st.divider()
 
-# Agora coloca a foto ao lado das opções
-col_img, col_opcoes = st.columns([1, 2])
+    col_img, col_opcoes = st.columns([1, 2])
 
+    with col_img:
+        img_file = st.session_state.get("personagem_img", "")
+        if img_file:
+            img_path = os.path.join(ASSETS_DIR, img_file)
+            if os.path.isfile(img_path):
+                st.image(Image.open(img_path), width=250)
 
-with col_img:
-    img_file = st.session_state.get("personagem_img", "")
+    with col_opcoes:
+        st.subheader("Escolha sua ação:")
 
-    if img_file:
-        img_path = os.path.join(ASSETS_DIR, img_file)
+        opcoes = [
+            (dados.get("Opcao_A", ""), dados.get("Efeito_A", "")),
+            (dados.get("Opcao_B", ""), dados.get("Efeito_B", "")),
+            (dados.get("Opcao_C", ""), dados.get("Efeito_C", ""))
+        ]
 
-        if os.path.isfile(img_path):
-            st.image(Image.open(img_path), width=250)
-        else:
-            st.warning(f"Imagem não encontrada: {img_path}")
-    else:
-        st.warning("Nenhum personagem selecionado.")
+        for texto_opc, efeito in opcoes:
+            if texto_opc:
+                if st.button(texto_opc):
+                    aplicar_efeito(efeito)
 
-with col_opcoes:
-    st.subheader("Escolha sua ação:")
+                    msg_biblica = (
+                        f"📌 **Referência:** {dados.get('Referencia_Biblica','')}\n\n"
+                        f"{dados.get('Interpretacao_Presbiteriana','')}"
+                    )
 
-    opcoes = [
-        (dados.get("Opcao_A", ""), dados.get("Efeito_A", "")),
-        (dados.get("Opcao_B", ""), dados.get("Efeito_B", "")),
-        (dados.get("Opcao_C", ""), dados.get("Efeito_C", ""))
-    ]
+                    st.session_state.mensagem_reflexao = msg_biblica
+                    st.session_state.tela = "reflexao"
+                    st.rerun()
 
-    for texto_opc, efeito in opcoes:
-        if texto_opc:
-            if st.button(texto_opc):
-                aplicar_efeito(efeito)
-
-                msg_biblica = (
-                    f"📌 **Referência:** {dados.get('Referencia_Biblica','')}\n\n"
-                    f"{dados.get('Interpretacao_Presbiteriana','')}"
-                )
-
-                st.session_state.mensagem_reflexao = msg_biblica
-                st.session_state.tela = "reflexao"
-                st.rerun()
     st.divider()
 
     if st.button("🛑 Terminar o jogo e ver resultados"):
