@@ -247,10 +247,19 @@ def tela_fase():
 # Agora coloca a foto ao lado das opções
 col_img, col_opcoes = st.columns([1, 2])
 
+
 with col_img:
-    img_path = os.path.join(ASSETS_DIR, st.session_state.get("personagem_img", ""))
-    if os.path.exists(img_path):
-        st.image(Image.open(img_path), width=250)
+    img_file = st.session_state.get("personagem_img", "")
+
+    if img_file:
+        img_path = os.path.join(ASSETS_DIR, img_file)
+
+        if os.path.isfile(img_path):
+            st.image(Image.open(img_path), width=250)
+        else:
+            st.warning(f"Imagem não encontrada: {img_path}")
+    else:
+        st.warning("Nenhum personagem selecionado.")
 
 with col_opcoes:
     st.subheader("Escolha sua ação:")
