@@ -20,21 +20,33 @@ st.set_page_config(
 )
 st.markdown("""
 <style>
-/* Texto geral */
+
 html, body, [class*="css"]  {
     font-size: 18px !important;
 }
 
-/* Botões */
+div[data-testid="stMarkdownContainer"] p {
+    font-size: 18px !important;
+    line-height: 1.6 !important;
+}
+
+div[data-testid="stMarkdownContainer"] {
+    font-size: 18px !important;
+}
+
 .stButton>button {
     font-size: 18px !important;
     padding: 12px 18px;
 }
 
-/* Títulos */
+input, textarea {
+    font-size: 18px !important;
+}
+
 h1 { font-size: 40px !important; }
 h2 { font-size: 30px !important; }
 h3 { font-size: 24px !important; }
+
 </style>
 """, unsafe_allow_html=True)
 
