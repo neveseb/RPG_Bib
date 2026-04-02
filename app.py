@@ -232,16 +232,15 @@ def tela_fase():
 
     dados = st.session_state.lista_desafios[st.session_state.indice_desafio]
 
-st.divider()
+    st.markdown(
+        f"<div style='font-size:22px; font-weight:bold;'>📍 Cenário: {dados.get('Contexto','Geral')}</div>",
+        unsafe_allow_html=True
+    )
 
-# Mostra o texto do desafio primeiro
-st.header(f"📍 Cenário: {dados.get('Contexto', 'Geral')}")
-st.markdown(
-    f"<div style='font-size:20px; line-height:1.6;'><b>Situação:</b> {dados.get('Cenario','...')}</div>",
-    unsafe_allow_html=True
-)
-
-st.divider()
+    st.markdown(
+        f"<div style='font-size:20px; line-height:1.6;'><b>Situação:</b> {dados.get('Cenario','...')}</div>",
+        unsafe_allow_html=True
+    )st.divider()
 
 # Agora coloca a foto ao lado das opções
 col_img, col_opcoes = st.columns([1, 2])
