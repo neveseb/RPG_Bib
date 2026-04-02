@@ -232,20 +232,27 @@ def tela_fase():
 
     dados = st.session_state.lista_desafios[st.session_state.indice_desafio]
 
-    col1, col2 = st.columns([1, 2])
+st.divider()
 
-    with col1:
-        img_path = os.path.join(ASSETS_DIR, st.session_state.get("personagem_img", ""))
-        if os.path.exists(img_path):
-            st.image(Image.open(img_path), width=250)
+# Mostra o texto do desafio primeiro
+st.header(f"📍 Cenário: {dados.get('Contexto', 'Geral')}")
+st.markdown(
+    f"<div style='font-size:20px; line-height:1.6;'><b>Situação:</b> {dados.get('Cenario','...')}</div>",
+    unsafe_allow_html=True
+)
 
-    with col2:
-        st.header(f"📍 Cenário: {dados.get('Contexto', 'Geral')}")
-        st.markdown(f"**Situação:** {dados.get('Cenario', '...')}")
-    
-    
+st.divider()
 
-    st.divider()
+# Agora coloca a foto ao lado das opções
+col_img, col_opcoes = st.columns([1, 2])
+
+with col_img:
+    img_path = os.path.join(ASSETS_DIR, st.session_state.get("personagem_img", ""))
+    if os.path.exists(img_path):
+        st.image(Image.open(img_path), width=250)
+
+with col_opcoes:
+    st.subheader("Escolha sua ação:")
 
     opcoes = [
         (dados.get("Opcao_A", ""), dados.get("Efeito_A", "")),
@@ -266,7 +273,6 @@ def tela_fase():
                 st.session_state.mensagem_reflexao = msg_biblica
                 st.session_state.tela = "reflexao"
                 st.rerun()
-
     st.divider()
 
     if st.button("🛑 Terminar o jogo e ver resultados"):
@@ -278,7 +284,10 @@ def tela_reflexao():
     barra_status()
 
     st.title("📖 Reflexão Bíblica")
-    st.markdown(st.session_state.mensagem_reflexao)
+    st.markdown(
+    f"<div style='font-size:20px; line-height:1.7;'>{st.session_state.mensagem_reflexao}</div>",
+    unsafe_allow_html=True
+)
 
     if st.button("➡️ Próximo desafio"):
         st.session_state.indice_desafio += 1
